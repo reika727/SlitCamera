@@ -1,0 +1,7 @@
+cmake_minimum_required(VERSION 3.4.1)
+add_library(native-lib SHARED native-lib.cpp)
+add_library(image_utility SHARED ../../../../../AndroidProjectLibraries/image_utility/image_utility.cpp)
+find_library(log-lib log)
+target_link_libraries(native-lib -landroid -fopenmp image_utility ${log-lib})
+target_link_libraries(image_utility -landroid)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 ${OpenMP_CXX_FLAGS} -static-openmp -Xclang -fopenmp")
