@@ -1,4 +1,4 @@
-#include"../../../../../AndroidProjectLibraries/image_utility/image_utility.hpp"
+#include"image_utility.hpp"
 #include<omp.h>
 #include<stdexcept>
 
