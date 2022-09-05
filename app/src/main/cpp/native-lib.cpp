@@ -29,7 +29,7 @@ extern "C" JNIEXPORT void JNICALL Java_com_example_slitcamera_MainActivity_jniIn
         );
         if (env->ExceptionCheck())throw std::length_error("allocation failed");
         image_buffer = env->NewGlobalRef(image_buffer);
-        uint8_t *buffer_ptr = static_cast<uint8_t *>(env->GetDirectBufferAddress(image_buffer));
+        auto *buffer_ptr = static_cast<uint8_t *>(env->GetDirectBufferAddress(image_buffer));
         for (int i = 0; i < used_frames; ++i)
             for (int j = 0; j < width * height / 2; ++j)
                 buffer_ptr[(i * 3 + 2) * width * height / 2 + j] = 128;
@@ -53,7 +53,7 @@ extern "C" JNIEXPORT void JNICALL Java_com_example_slitcamera_MainActivity_jniSl
         image_utility::surface_texture_accessor_R8G8B8X8 sa(env, drawing_surface);
         image_utility::coordinate_transformer ct(ia, sa, is_landscape);
         const int used_frames = std::max(ia.get_height(), ia.get_width());
-        uint8_t *buffer_ptr = static_cast<uint8_t *>(env->GetDirectBufferAddress(image_buffer));
+        auto *buffer_ptr = static_cast<uint8_t *>(env->GetDirectBufferAddress(image_buffer));
         auto access_buffer = [ia, buffer_ptr, used_frames](int x, int y, YUV c, int back) -> uint8_t & {
             back %= used_frames;
             return buffer_ptr[
@@ -64,7 +64,7 @@ extern "C" JNIEXPORT void JNICALL Java_com_example_slitcamera_MainActivity_jniSl
                     )
             ];
         };
-#pragma omp parallel for collapse(2)
+#pragma omp parallel for default(none) shared(ia, access_buffer, is_landscape, ct, sa) collapse(2)
         for (int y = 0; y < ia.get_height(); ++y) {
             for (int x = 0; x < ia.get_width(); ++x) {
                 access_buffer(x, y, YUV::Y, 0) = ia(x, y, YUV::Y);
