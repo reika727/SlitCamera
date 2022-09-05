@@ -1,6 +1,6 @@
-#include"image_utility.hpp"
-#include<omp.h>
-#include<stdexcept>
+#include "image_utility.hpp"
+#include <omp.h>
+#include <stdexcept>
 
 using YUV = image_utility::YUV;
 using RGB = image_utility::RGB;
