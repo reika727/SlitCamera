@@ -1,0 +1,3 @@
+[submodule "AndroidProjectLibraries"]
+	path = AndroidProjectLibraries
+	url = https://github.com/reika727/AndroidProjectLibraries
